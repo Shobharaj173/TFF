@@ -1,0 +1,54 @@
+module tff(t,clk,rst,q,qb);
+input t,clk,rst;
+output reg q,qb;
+always@(posedge clk)
+begin
+if(rst==1)
+begin
+q=1’b0;
+qb=1’b1;
+end
+else
+begin
+case(t)
+1’b0: begin q=q; qb=qb; end
+1’b1: begin q=~(q); qb=~(qb); end
+endcase
+end
+end
+endmodule
+
+
+
+
+TESTBENCH TFF CODE
+module tff-tb;
+//Inputs
+reg t;
+reg clk;
+reg rst;
+//outputs
+wire q;
+wire qb;
+tff uut(
+.t(t),
+.clk(clk),
+.rst(rst),
+.q(q),
+.qb(qb),
+);
+
+initial
+clk=1’b0;
+always
+#10 clk=~clk;
+
+initial begin
+rst=1’b1; t=1’b0;
+#30 rst=1’b0;
+#30 t=1’b1; 
+#30 t=1’b0;
+#20  rst=1’b1;
+#20 ;
+end 
+endmodule
